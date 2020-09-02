@@ -1,0 +1,12 @@
+archive/
+bin
+.terraform/
+.DS_Store
+lambda/
+*.tfstate
+*.tfstate.*
+plan
+terraform/fleet-infrastructure/fleet-backend-*
+terraform/modules/components/dynamodb
+terraform/modules/components/lambda-go
+terraform/modules/services/fleet-*

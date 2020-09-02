@@ -1,0 +1,11 @@
+{
+    "ami_name" : "unreal-dedicated-server-v1",
+    "dedicated_server_bucket" : "",
+    "iam_instance_profile" : "unreal-dedicated-server-instance-profile",
+    "instance_type" : "c5.large",
+    "region" : "",
+    "root_volume_size" : "15",
+    "root_volume_type" : "gp2",
+    "source_ami" : "ami-0758470213bdd23b1",
+    "profile" : ""
+}

@@ -1,0 +1,63 @@
+{
+    "variables" : {
+        "ami_name" : "",
+        "dedicated_server_bucket" : "",
+        "iam_instance_profile" : "",
+        "instance_type" : "",
+        "region" : "",
+        "root_volume_size" : "",
+        "root_volume_type" : "",
+        "source_ami" : ""
+    },
+    "builders" : [
+        {
+            "type": "amazon-ebs",
+            "ami_name": "{{user `ami_name`}}",
+            "ami_description": "Unreal Engine dedicated server AMI",
+            "ami_block_device_mappings" : [
+                {
+                    "device_name": "/dev/sda1",
+                    "volume_size" : "{{user `root_volume_size`}}",
+                    "volume_type" : "{{user `root_volume_type`}}"
+                }
+            ],
+            "ami_regions" : [
+                "ap-southeast-1",
+                "eu-central-1",
+                "eu-west-1",
+                "us-east-1",
+                "us-west-2"
+            ],
+            "iam_instance_profile": "{{user `iam_instance_profile`}}",
+            "instance_type" : "{{user `instance_type`}}",
+            "source_ami" : "{{user `source_ami`}}",
+            "ssh_username": "ubuntu",
+            "profile": "{{user `profile`}}",
+            "region": "{{user `region`}}",
+            "tags" : {
+                "Name": "unreal-dedicated-server",
+                "CreatedBy": "UnrealOps"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "scripts/service/dedicated-server.service",
+            "destination": "/tmp/dedicated-server.service"
+        },
+        {
+            "type": "shell",
+            "execute_command": "sudo -S bash -c '{{ .Vars }} {{ .Path }}'",
+            "inline": ["mv /tmp/dedicated-server.service /etc/systemd/system/"]
+        },
+        {
+            "type": "shell",
+            "execute_command": "sudo -S bash -c '{{ .Vars }} {{ .Path }}'",
+            "environment_vars" : [
+                "DEDICATED_SERVER_BUCKET={{user `dedicated_server_bucket`}}"
+            ],
+            "script": "scripts/provision-ami.sh"
+        }
+    ]
+}
