@@ -4,7 +4,6 @@ StartLimitAction=reboot
 
 [Service]
 ExecStart=/usr/bin/dedicated-server/Linux/LinuxServer/<Your_Server>.sh
-Nice=10
 Restart=Always
 RestartSec=1
 User=unreal
